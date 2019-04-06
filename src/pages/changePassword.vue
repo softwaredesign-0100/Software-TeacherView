@@ -108,14 +108,15 @@
       submitChangePwdForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$request.post('/api/change_password', {
-              'identify':this.$store.state.identify,
-              'account': localStorage.getItem('account'),
-              'old_password': this.ChangePwdForm.old_password,
-              'new_password': this.ChangePwdForm.new_password
+            this.$store.dispatch('post_data', {
+              api: '/api/change_password',
+              data: {
+                'identify':this.$store.state.identify,
+                'account': localStorage.getItem('account'),
+                'old_password': this.ChangePwdForm.old_password,
+                'new_password': this.ChangePwdForm.new_password
+              }
             }).then((response) => {
-              console.log(response)
-              console.log(response.status)
               if (response.data.status == 200) {
                 this.$message({
                   message: '修改密码成功',
@@ -125,21 +126,16 @@
                 this.$refs[formName].resetFields();
                 this.ChangePwdVisible = false
                 this.$router.push('/Main')
-                this.ChangePwdVisible = true
-              } else if (response.data.status == 403) {
-                this.$message({
-                  message: "原密码错误",
-                  type: 'error',
-                  duration: 3000
+              } else {
+                this.$store.commit({
+                  type: 'show_message',
+                  status: response.data.status
                 })
+                this.$message(this.$store.state.app.message_box)
                 this.ChangePwdForm.old_password = ''
               }
             }).catch((error) => {
-              this.$message({
-                message: '网络错误,请稍后重试',
-                type: 'warning',
-                duration: 3000
-              });
+              alert(error)
             })
           } else {
             this.$message({

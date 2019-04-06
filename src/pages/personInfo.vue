@@ -4,8 +4,10 @@
         <div>
             <el-row>
                 <el-col :span="16" :offset="2" style="margin-top: 10%">
-                    <span>修改 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <el-switch v-model="disabled" @change="changedis"></el-switch></span>
-                    <el-form style="margin-top: 2%" :label-position="labelPosition" label-width="80px" :model="personInfo" :rules="rules">
+                    <span>修改 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <el-switch v-model="disabled"
+                                                                                 @change="changedis"></el-switch></span>
+                    <el-form style="margin-top: 2%" :label-position="labelPosition" label-width="80px"
+                             :model="personInfo" :rules="rules">
                         <el-form-item label="姓名" prop="name">
                             <el-input :disabled="disabled2" v-model="personInfo.name"></el-input>
                         </el-form-item>
@@ -60,7 +62,7 @@
 
 
                 disabled: false,
-                disabled2:true,
+                disabled2: true,
                 personInfo: {
                     name: '',
                     email: '',
@@ -77,27 +79,25 @@
                 }
             }
         },
-        methods:{
-            changedis(){
+        methods: {
+            changedis() {
                 console.log(this.disabled2)
                 this.disabled2 = !this.disabled2
             },
 
             submitPerInfo() {
-                this.$request.post('/api/submit_per_info', {
-                    identify: this.$store.state.identify,
-                    name: this.personInfo.name,
-                    email: this.personInfo.email,
-                    classroom: '',
-                    direction: this.personInfo.direction,
-                    introduction: this.personInfo.introduction,
-                    workplace: this.personInfo.workplace,
-                    phone: this.personInfo.phone,
-                    department: '',
-                    number: '',
-                    account: localStorage.getItem('account')
+                this.$store.dispatch('post_data', {
+                    api: '/api/t_submit_own_info',
+                    data: {
+                        name: this.personInfo.name,
+                        email: this.personInfo.email,
+                        direction: this.personInfo.direction,
+                        introduction: this.personInfo.introduction,
+                        workplace: this.personInfo.workplace,
+                        phone: this.personInfo.phone,
+                        account: localStorage.getItem('account')
+                    }
                 }).then((response) => {
-                    console.log(response.data)
                     if (response.data.status == 200) {
                         this.$message({
                             type: 'success',
@@ -105,22 +105,15 @@
                         })
                         this.disabled2 = true
                         localStorage.setItem('personInfo', 'false')
-                    } else if (response.data.status == 201) {
-                        this.$message({
-                            type: 'error',
-                            message: '网络异常，请稍后再试'
+                    } else {
+                        this.$store.commit({
+                            type: 'show_message',
+                            status: response.data.status
                         })
-                    } else if (response.data.status == 401) {
-                        this.$message({
-                            type: 'error',
-                            message: '网络异常，请稍后再试'
-                        })
+                        this.$message(this.$store.state.app.message_box)
                     }
                 }).catch((error) => {
-                    this.$message({
-                        type: 'error',
-                        message: '网络异常，请稍后再试'
-                    })
+                    alert(error)
                 })
             }
 
@@ -128,28 +121,24 @@
 
         mounted() {
             console.log(localStorage.getItem('account'))
-            this.$request.post('/api/get_t_info', {
-                'account': localStorage.getItem('account')
+
+            this.$store.dispatch('post_data', {
+                api: '/api/t_view_own_info',
+                data: {
+                    'account': localStorage.getItem('account')
+                }
             }).then((response) => {
-                console.log(response.data)
                 if (response.data.status == 200) {
                     this.personInfo = response.data.info
-                } else if (response.data.status == 201) {
-                    this.$message({
-                        type: 'error',
-                        message: '网络异常，请稍后再试'
+                } else {
+                    this.$store.commit({
+                        type: 'show_message',
+                        status: response.data.status
                     })
-                } else if (response.data.status == 401) {
-                    this.$message({
-                        type: 'error',
-                        message: '网络异常，请稍后再试'
-                    })
+                    this.$message(this.$store.state.app.message_box)
                 }
             }).catch((error) => {
-                this.$message({
-                    type: 'error',
-                    message: '网络异常，请稍后再试'
-                })
+                alert(error)
             })
         }
     }

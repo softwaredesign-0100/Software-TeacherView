@@ -94,12 +94,15 @@
 
         mounted() {
             console.log(localStorage.getItem('account'))
-            this.$request.post('/api/t_view_reservation', {
-                account: localStorage.getItem('account')
+
+            this.$store.dispatch('post_data', {
+                api: '/api/t_view_reservation',
+                data: {
+                    account: localStorage.getItem('account')
+                }
             }).then((response) => {
-                console.log(response.data)
                 if (response.data.status == 200) {
-                    this.myRes = response.data.results
+                    this.myRes = response.data.ress
                     console.log(this.myRes)
                     for (let i = 0; i < this.myRes.length; i = i + 1) {
                         this.myRes[i]['segment'] = this.$store.state.map_segment[this.myRes[i]['segment']]
@@ -107,17 +110,42 @@
                         this.myRes[i]['weekday'] = this.$store.state.map_weekday[this.myRes[i]['weekday']]
                     }
                     console.log(this.myRes)
-                } else if (response.data.status == 201) {
-
-                } else if (response.data.status == 401) {
-
+                } else {
+                    this.$store.commit({
+                        type: 'show_message',
+                        status: response.data.status
+                    })
+                    this.$message(this.$store.state.app.message_box)
                 }
             }).catch((error) => {
-                this.$message({
-                    type: 'error',
-                    message: '网络异常，请稍后再试'
-                })
+                alert(error)
             })
+
+            // this.$request.post('/api/t_view_reservation', {
+            //     account: localStorage.getItem('account')
+            // }).then((response) => {
+            //     console.log('response')
+            //     console.log(response.data)
+            //     if (response.data.status == 200) {
+            //         this.myRes = response.data.ress
+            //         console.log(this.myRes)
+            //         for (let i = 0; i < this.myRes.length; i = i + 1) {
+            //             this.myRes[i]['segment'] = this.$store.state.map_segment[this.myRes[i]['segment']]
+            //             this.myRes[i]['week'] = this.$store.state.map_week[this.myRes[i]['week']]
+            //             this.myRes[i]['weekday'] = this.$store.state.map_weekday[this.myRes[i]['weekday']]
+            //         }
+            //         console.log(this.myRes)
+            //     } else if (response.data.status == 201) {
+            //
+            //     } else if (response.data.status == 401) {
+            //
+            //     }
+            // }).catch((error) => {
+            //     this.$message({
+            //         type: 'error',
+            //         message: '网络异常，请稍后再试'
+            //     })
+            // })
         }
     }
 </script>

@@ -1,11 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import app from './modules/app'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+    modules: {
+        app
+    },
     state: {
         account: '',
+        sidebar_disabled: false,
         identify: 'teacher',
         map_week: {
             '1': '第1周',
@@ -53,11 +58,6 @@ export default new Vuex.Store({
             '6': '星期六',
             '7': '星期日'
         }
-    },
-
-    mutations: {
-        get_account(state, payload) {
-            state.account = payload.account
-        }
     }
+
 })

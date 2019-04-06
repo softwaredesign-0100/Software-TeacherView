@@ -5,7 +5,7 @@ import myFile from '@/components/myFiles'
 import Sidebar from '@/components/Sidebar'
 import changePassword from '../pages/changePassword'
 import showRes from '../pages/showRes'
-import seekRes from '../pages/seekRes'
+// import seekRes from '../pages/seekRes'
 import publishRes from '../pages/publishRes'
 import personInfo from '../pages/personInfo'
 
@@ -29,10 +29,10 @@ export default new Router({
                     path: '/changePassword',
                     component: changePassword
                 },
-                {
-                    path: '/seekRes',
-                    component: seekRes
-                },
+                // {
+                //     path: '/seekRes',
+                //     component: seekRes
+                // },
                 {
                     path: '/publishRes',
                     component: publishRes

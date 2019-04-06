@@ -31,10 +31,7 @@
 				<el-form-item
 						prop="account"
 						label="账户"
-						:rules="[
-						{ required: true, message: '请输入账号', trigger: 'blur' },
-					]"
-				>
+						:rules="[{ required: true, message: '请输入账号', trigger: 'blur' },]">
 					<el-input v-model="SignInForm.account"></el-input>
 				</el-form-item>
 				<el-form-item
@@ -42,8 +39,7 @@
 						label="密码"
 						:rules="[
 						{ required: true, message: '请输入密码', trigger: 'blur' },
-					]"
-				>
+					]">
 					<el-input v-model="SignInForm.password" type="password"></el-input>
 				</el-form-item>
 			</el-form>
@@ -196,42 +192,39 @@
 			submitSignUpForm(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
-						this.$request.post('/api/sign_up', {
-							'identify':this.$store.state.identify,
-							'account': this.SignUpForm.account,
-							'password': this.SignUpForm.password,
-							// 'pin': this.SignUpForm.pin
+						this.$store.dispatch('post_data', {
+							api: '/api/sign_up',
+							data: {
+								'identify': this.$store.state.identify,
+								'account': this.SignUpForm.account,
+								'password': this.SignUpForm.password,
+							}
 						}).then((response) => {
-							console.log(response)
+							console.log('sign up response: ', response)
 							if (response.data.status == 200) {
 								this.$message({
-									message: '用户创建成功，请使用创建好的账号登录',
-									type: 'success',
-									duration: 3000
-								});
-								this.$refs[formName].resetFields();
-								this.SignUpVisible = false
-							} else if (response.data.status == 400) {
-								// this.$message({
-								//   message: response.data.info,
-								//   type: 'warning',
-								//   duration: 3000
-								// });
+									type: 'suucess',
+									message: '注册成功！请前往登陆界面登陆',
+									duration: 6000
+								})
+							} else if (response.data == 400) {
 								this.$message({
 									message: "该用户名已存在",
 									type: 'error',
 									duration: 3000,
 									showClose: true
 								})
-
 								this.SignUpForm.account = ''
+							} else {
+								this.$store.commit({
+									type: 'show_message',
+									status: response.data.status
+								})
+								console.log(response.data.status)
+								this.$message(this.$store.state.app.message_box)
 							}
 						}).catch((error) => {
-							this.$message({
-								message: '网络错误,请稍后重试',
-								type: 'warning',
-								duration: 3000
-							});
+							alert(error)
 						})
 					} else {
 						this.$message({
@@ -257,54 +250,38 @@
 			SignIn(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
-						this.$request.post('/api/sign_in', {
-							'account': this.SignInForm.account,
-							'password': this.SignInForm.password,
-							'identify': this.$store.state.identify
+						console.log('Home.vue identify: ', this.$store.state.identify)
+						this.$store.dispatch('post_data', {
+							api: '/api/sign_in',
+							data: {
+								account: this.SignInForm.account,
+								password: this.SignInForm.password,
+								identify: this.$store.state.identify
+							}
 						}).then((response) => {
-							console.log(response)
-							if (response.data.status == 200) {
+							console.log('sign in response: ', response)
+							if (response.data.status == 200 || response.data.status == 401) {
 								this.$message({
-									message: '登录成功',
 									type: 'success',
-									duration: 3000
-								});
+									message: '欢迎使用校园预约系统'
+								})
+								localStorage.setItem('account', this.SignInForm.account)
+								if (response.data.status == 200) {
+									this.$router.push('/Main')
+								} else {
+									this.$router.push('/personInfo')
+								}
+								location.reload()
+							} else {
 								this.$store.commit({
-									'type' :'get_account',
-									'account': this.SignInForm.account
+									type: 'show_message',
+									status: response.data.status
 								})
-								this.$store.state.account = this.SignInForm.account
-								localStorage.setItem('account', this.SignInForm.account)
-								localStorage.setItem('personInfo', 'false')
-								this.$router.push('/Main')
-								location.reload()
-
-							} else if (response.data.status == 403) {
-								this.$message({
-									message: "密码错误！",
-									type: 'error',
-									duration: 3000,
-									showClose: true
-								})
-							} else if (response.data.status == 404) {
-								this.$message({
-									message: '没有此用户，请先注册！',
-									type : 'warning',
-									duration: 3000,
-									showClose: true
-								})
-							} else  if (response.data.status == 401) {
-								localStorage.setItem('account', this.SignInForm.account)
-								localStorage.setItem('personInfo', 'true')
-								this.$router.push('/personInfo')
-								location.reload()
+								console.log(response.data.status)
+								this.$message(this.$store.state.app.message_box)
 							}
 						}).catch((error) => {
-							this.$message({
-								message: '网络错误,请稍后重试',
-								type: 'warning',
-								duration: 3000
-							});
+							alert(error)
 						})
 					}
 				});

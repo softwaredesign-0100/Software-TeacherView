@@ -310,34 +310,28 @@
                     }
                 }
 
-                console.log('saddddddddddddddddd')
-                console.log(res)
-                this.$request.post('/api/t_release_reservation', {
-                    'account': localStorage.getItem('account'),
-                    'reservations': res
+                this.$store.dispatch('post_data', {
+                    api: '/api/t_release_reservation',
+                    data: {
+                        'account': localStorage.getItem('account'),
+                        'reservations': res
+                    }
                 }).then((response) => {
-                    console.log(response.data)
                     if (response.data.status == 200) {
                         this.$message({
                             type: 'success',
                             message: '发布预约成功!'
                         })
-                    } else if (response.data.status == 201) {
-                        this.$message({
-                            type: 'error',
-                            message: '网络异常，请稍后再试'
+                    } else {
+                        this.$store.commit({
+                            type: 'show_message',
+                            status: response.data.status
                         })
-                    } else if (response.data.status == 401) {
-                        this.$message({
-                            type: 'error',
-                            message: '时间段重复发布!'
-                        })
+                        this.$message(this.$store.state.app.message_box)
+                        this.ChangePwdForm.old_password = ''
                     }
                 }).catch((error) => {
-                    this.$message({
-                        type: 'error',
-                        message: '网络异常，请稍后再试'
-                    })
+                    alert(error)
                 })
             },
             onCancel() {
