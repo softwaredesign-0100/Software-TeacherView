@@ -13,13 +13,13 @@
                                 sortable
                                 prop="week"
                                 label="周次"
-                                width="100">
+                                width="80">
                         </el-table-column>
                         <el-table-column
                                 sortable
                                 prop="weekday"
                                 label="天次"
-                                width="100">
+                                width="80">
                         </el-table-column>
                         <el-table-column
                                 sortable
@@ -45,9 +45,27 @@
                                         size="mini"
                                         @click="handleFinish(scope.$index, scope.row)">完成</el-button>
                                 <el-button
+                                        v-if="scope.row.is_canceled == '0'"
                                         size="mini"
                                         type="danger"
-                                        @click="handleDelete(scope.$index, scope.row)">取消</el-button>
+                                        @click="handleCancel(scope.$index, scope.row)">{{btn_cancel_res}}</el-button>
+                                <el-button
+                                        v-if="scope.row.is_canceled == '1'"
+                                        size="mini"
+                                        type="danger"
+                                        :disabled="true"
+                                        @click="handleCancel(scope.$index, scope.row)">{{btn_wait_ensure}}</el-button>
+                                <el-button
+                                        v-if="scope.row.is_canceled == '2'"
+                                        size="mini"
+                                        type="danger"
+                                        @click="handleEnsure(scope.$index, scope.row)">{{btn_ensure_cancel_res}}</el-button>
+                                <el-button
+                                        v-if="scope.row.is_canceled == '3'"
+                                        size="mini"
+                                        type="danger"
+                                        :disabled="true"
+                                        @click="handleCancel(scope.$index, scope.row)">已取消</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -68,6 +86,9 @@
 
         data() {
             return {
+                btn_cancel_res: '取消',
+                btn_ensure_cancel_res: '同意取消',
+                btn_wait_ensure: '等待同意',
                 myRes : [
                     {
                         week: '第1周',
@@ -89,6 +110,81 @@
             handleDelete(index, row) {
                 console.log(index, row);
                 console.log(row.teacher)
+            },
+
+            handleCancel(index, row) {
+                this.$prompt('请输入取消预约原因', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    console.log(row);
+                    if (row.student == '') {
+                        this.$message({
+                            message: '取消预约成功!',
+                            type: 'success'
+                        })
+                    }
+                    this.$store.dispatch ('post_data', {
+                        api: '/api/initiate_cancel',
+                        data: {
+                            'account': localStorage.getItem('account'),
+                            'serial': row.serial,
+                            'reason': value,
+                            'identify': this.$store.state.identify
+                        }
+                    }).then((response) => {
+                        if (response.data.status == 200) {
+                            this.$message({
+                                type: 'success',
+                                message: '等待对方答复……'
+                            })
+                            location.reload()
+                        } else {
+                            this.$store.commit({
+                                type: 'show_message',
+                                status: response.data.status
+                            })
+                            console.log(response.data.status)
+                            this.$message(this.$store.state.app.message_box)
+                        }
+                    }).catch((error) => {
+                        alert(error)
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });
+                });
+            },
+
+            handleEnsure(index, row) {
+                console.log('handle ensure row: ', row)
+                this.$store.dispatch ('post_data', {
+                    api: '/api/ensure_cancel',
+                    data: {
+                        'account': localStorage.getItem('account'),
+                        'serial': row.serial,
+                        'identify': this.$store.state.identify
+                    }
+                }).then((response) => {
+                    if (response.data.status == 200) {
+                        this.$message({
+                            type: 'success',
+                            message: '已取消'
+                        })
+                        location.reload()
+                    } else {
+                        this.$store.commit({
+                            type: 'show_message',
+                            status: response.data.status
+                        })
+                        console.log(response.data.status)
+                        this.$message(this.$store.state.app.message_box)
+                    }
+                }).catch((error) => {
+                    alert(error)
+                });
             }
         },
 
@@ -120,32 +216,6 @@
             }).catch((error) => {
                 alert(error)
             })
-
-            // this.$request.post('/api/t_view_reservation', {
-            //     account: localStorage.getItem('account')
-            // }).then((response) => {
-            //     console.log('response')
-            //     console.log(response.data)
-            //     if (response.data.status == 200) {
-            //         this.myRes = response.data.ress
-            //         console.log(this.myRes)
-            //         for (let i = 0; i < this.myRes.length; i = i + 1) {
-            //             this.myRes[i]['segment'] = this.$store.state.map_segment[this.myRes[i]['segment']]
-            //             this.myRes[i]['week'] = this.$store.state.map_week[this.myRes[i]['week']]
-            //             this.myRes[i]['weekday'] = this.$store.state.map_weekday[this.myRes[i]['weekday']]
-            //         }
-            //         console.log(this.myRes)
-            //     } else if (response.data.status == 201) {
-            //
-            //     } else if (response.data.status == 401) {
-            //
-            //     }
-            // }).catch((error) => {
-            //     this.$message({
-            //         type: 'error',
-            //         message: '网络异常，请稍后再试'
-            //     })
-            // })
         }
     }
 </script>

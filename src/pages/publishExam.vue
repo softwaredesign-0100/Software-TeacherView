@@ -229,7 +229,6 @@
                     ],
 
                 },
-
             }
         },
         methods: {
@@ -241,6 +240,7 @@
                 let start = this.examForm.e_time[0]
                 let end = this.examForm.e_time[1]
                 let place=this.examForm.place
+                let tips = this.examForm.tips
                 start=start.toLocaleString()
                 end=end.toLocaleString()
                 this.$store.dispatch('post_data', {
@@ -253,6 +253,7 @@
                         'start': start,
                         'end': end,
                         'place': place,
+                        'tips': tips
                     }
                 }).then((response) => {
                     if (response.data.status == 200) {

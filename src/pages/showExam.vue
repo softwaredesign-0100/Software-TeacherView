@@ -11,7 +11,7 @@
                             style="width: 100%">
                         <el-table-column
                                 sortable
-                                prop="e_name"
+                                prop="name"
                                 label="课程"
                                 width="150">
                         </el-table-column>
@@ -19,13 +19,13 @@
                                 sortable
                                 prop="week"
                                 label="周次"
-                                width="140">
+                                width="100">
                         </el-table-column>
                         <el-table-column
                                 sortable
                                 prop="weekday"
                                 label="天次"
-                                width="140">
+                                width="100">
                         </el-table-column>
                         <el-table-column
                                 sortable
@@ -80,15 +80,7 @@
         data() {
             return {
                 myRes : [
-                    {
-                        week: '第1周',
-                        weekday: '周五',
-                        start:'08:30',
-                        end:'10:30',
-                        e_name:'数据库',
-                        place: 'M301',
-                        tips: '',
-                    }
+
                 ]
             }
         },
@@ -107,21 +99,24 @@
             console.log(localStorage.getItem('account'))
 
             this.$store.dispatch('post_data', {
-                api: '/api/t_view_reservation',
+                api: '/api/view_own_release_exams',
                 data: {
                     account: localStorage.getItem('account')
                 }
             }).then((response) => {
                 if (response.data.status == 200) {
-                    this.myRes = response.data.ress
+                    this.myRes = response.data.exams
                     console.log(this.myRes)
                     for (let i = 0; i < this.myRes.length; i = i + 1) {
-                        this.myRes[i]['start'] = this.$store.state.map_start[this.myRes[i]['start']]
-                        this.myRes[i]['end'] = this.$store.state.map_end[this.myRes[i]['end']]
                         this.myRes[i]['week'] = this.$store.state.map_week[this.myRes[i]['week']]
                         this.myRes[i]['weekday'] = this.$store.state.map_weekday[this.myRes[i]['weekday']]
                     }
                     console.log(this.myRes)
+                }else if (response.data.status == 400) {
+                    this.$message({
+                        type: 'warning',
+                        message: '课程已发布'
+                    })
                 } else {
                     this.$store.commit({
                         type: 'show_message',
