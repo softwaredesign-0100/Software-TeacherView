@@ -32,13 +32,16 @@
                             <el-menu-item index="/publishExam" ><i class="zhao-icon-third-icon_search"></i> &nbsp; 发布考试安排</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
-
-                    <el-menu-item index="/personInfo"><i class="zhao-icon-third-icon_boss"></i>
-                        &nbsp; 个人信息
-                    </el-menu-item>
+                    
                     <el-menu-item index="/changePassword"><i class="zhao-icon-third-icon_boss"></i>
                         &nbsp; 修改密码
                     </el-menu-item>
+                    
+                    <el-menu-item index="/personInfo"><i class="zhao-icon-third-icon_boss"></i>
+                        &nbsp; 个人信息
+                    </el-menu-item>
+
+                    
 
                 </el-menu>
             </el-col>
