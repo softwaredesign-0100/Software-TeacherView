@@ -105,7 +105,42 @@
 
         methods: {
             handleFinish(index, row) {
-                console.log(index, row);
+                this.$confirm('预约已完成？',{
+                    confirmButtonText: '是',
+                    cancelButtonText: '否',
+                }).then(({value})=>{
+                    console.log(row)
+                    this.$store.dispatch('post_data', {
+                        api: '/api/s_finish_res',
+                        data: {
+                            'account': localStorage.getItem('account'),
+                            'serial': row.serial
+                        }
+                        }).then((response) => {
+                        if (response.data.status == 200) {
+                            this.$message({
+                                type: 'success',
+                                message: '预约已完成！'
+                            })
+                            location.reload()
+                        } else {
+                            this.$store.commit({
+                                type: 'show_message',
+                                status: response.data.status
+                            })
+                            console.log(response.data.status)
+                            this.$message(this.$store.state.app.message_box)
+                        }
+                    }).catch((error) => {
+                        alert(error)
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: ' '
+                    });
+                })
+                //console.log(index, row);
             },
             handleDelete(index, row) {
                 console.log(index, row);
