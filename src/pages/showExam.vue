@@ -54,7 +54,7 @@
                             <template slot-scope="scope">
                                 <el-button
                                         size="mini"
-                                        @click="handleFinish(scope.$index, scope.row)">修改</el-button>
+                                        @click="handleEdit(scope.$index, scope.row)">修改</el-button>
                                 <el-button
                                         size="mini"
                                         type="danger"
@@ -62,6 +62,62 @@
                             </template>
                         </el-table-column>
                     </el-table>
+
+
+                    <el-dialog title="考试信息" :visible.sync="showChange" width="56%" :show-close="false">
+                        <el-form :model="examForm" label-position="left">
+                            <el-form-item label="考试名称" :label-width="label_width">
+                                <el-input v-model="examForm.e_name" autocomplete="off"></el-input>
+                            </el-form-item>
+                            <el-form-item label="考试地点" :label-width="label_width">
+                                <el-input v-model="examForm.place"></el-input>
+                            </el-form-item>
+                            <el-form-item label="时间安排" :label-width="label_width">
+                                <el-row>
+                                    <el-col :span="6">
+                                        <el-select v-model="week_selected" placeholder="请选择">
+                                            <el-option
+                                                    v-for="item in week_options"
+                                                    :key="item.value"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </el-col>
+                                    <el-col :span="6">
+                                        <el-select v-model="weekday_selected" placeholder="请选择">
+                                            <el-option
+                                                    v-for="item in weekday_options"
+                                                    :key="item.value"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-time-picker
+                                                is-range
+                                                v-model="examForm.e_time"
+                                                value-format="HH:mm"
+                                                format="HH:mm"
+                                                range-separator="至"
+                                                start-placeholder="开始时间"
+                                                end-placeholder="结束时间"
+                                                placeholder="选择时间范围">
+                                        </el-time-picker>
+                                    </el-col>
+                                </el-row>
+                            </el-form-item>
+                            <el-form-item label="考试小提示" :label-width="label_width">
+                                <el-input v-model="examForm.tips" autocomplete="off"></el-input>
+                            </el-form-item>
+
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click="handleCancel">取 消</el-button>
+                            <el-button type="primary" @click="handleEnsure">确 定</el-button>
+                        </div>
+                    </el-dialog>
                 </el-col>
             </el-row>
         </div>
@@ -81,27 +137,216 @@
             return {
                 myRes : [
 
-                ]
+                ],
+                showChange: false,
+
+                time_picker_options : {
+                    start: '',
+                    end: '',
+                    step: '00:05'
+                },
+
+                label_width: '120px',
+                examForm: {
+                    e_name: '',
+                    place: '',
+                    start: '',
+                    end: '',
+                    week: '',
+                    weekday: '',
+                    tips: '',
+                    e_time: '',
+                    serial: ''
+                },
+
+                e_time: '',
+
+                week_selected: '',
+                week_options: [
+                    {
+                        key: '选项1',
+                        label: '第1周',
+                        value: 1
+                    },
+                    {
+                        key: '选项2',
+                        label: '第2周',
+                        value: 2
+                    },
+                    {
+                        key: '选项3',
+                        label: '第3周',
+                        value: 3
+                    },
+                    {
+                        key: '选项4',
+                        label: '第4周',
+                        value: 4
+                    },
+                    {
+                        key: '选项5',
+                        label: '第5周',
+                        value: 5
+                    },
+                    {
+                        key: '选项6',
+                        label: '第6周',
+                        value: 6
+                    },
+                    {
+                        key: '选项7',
+                        label: '第7周',
+                        value: 7
+                    }, {
+                        key: '选项8',
+                        label: '第8周',
+                        value: 8
+                    },
+                    {
+                        key: '选项9',
+                        label: '第9周',
+                        value: 9
+                    },
+                    {
+                        key: '选项10',
+                        label: '第10周',
+                        value: 10
+                    },
+                    {
+                        key: '选项11',
+                        label: '第11周',
+                        value: 11
+                    },
+                    {
+                        key: '选项12',
+                        label: '第12周',
+                        value: 12
+                    },
+                    {
+                        key: '选项13',
+                        label: '第13周',
+                        value: 13
+                    },
+                    {
+                        key: '选项14',
+                        label: '第14周',
+                        value: 14
+                    },
+                    {
+                        key: '选项15',
+                        label: '第15周',
+                        value: 15
+                    },
+                    {
+                        key: '选项16',
+                        label: '第16周',
+                        value: 16
+                    }, {
+                        key: '选项17',
+                        label: '第17周',
+                        value: 17
+                    },
+                    {
+                        key: '选项18',
+                        label: '第18周',
+                        value: 18
+                    },
+
+                ],
+
+                weekday_selected:'',
+                weekday_options: [
+                    {
+                        key: '选项1',
+                        label: '星期一',
+                        value: 1,
+                    },
+                    {
+                        key: '选项2',
+                        label: '星期二',
+                        value: 2,
+                    },
+                    {
+                        key: '选项3',
+                        label: '星期三',
+                        value: 3,
+                    },
+                    {
+                        key: '选项4',
+                        label: '星期四',
+                        value: 4,
+                    },
+                    {
+                        key: '选项5',
+                        label: '星期五',
+                        value: 5,
+                    },
+                    {
+                        key: '选项6',
+                        label: '星期六',
+                        value: 6,
+                    },
+                    {
+                        key: '选项7',
+                        label: '星期日',
+                        value: 7,
+                    }
+                ],
+
             }
         },
 
         methods: {
-            handleFinish(index, row) {
-                /* this.$confirm('确认修改否？',{
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                }).then(({value})=>{
-                    console.log(row)
+            handleEdit(index, row) {
+                this.showChange = true;
+                this.examForm = {
+                    e_name: row.name,
+                    week: row.week,
+                    weekday: row.weekday,
+                    place: row.place,
+                    start: row.start,
+                    end: row.end,
+                    tips: row.tips,
+                    e_time: '',
+                    serial: row.serial,
+                };
+
+            },
+
+            handleCancel() {
+                this.showChange = false;
+            },
+
+            handleEnsure() {
+                this.examForm.week = this.week_selected;
+                this.examForm.weekday = this.weekday_selected;
+                this.examForm.start = this.examForm.e_time[0];
+                this.examForm.end = this.examForm.e_time[1];
+                this.examForm.account = localStorage.getItem('account');
+                console.log(this.examForm);
                     this.$store.dispatch('post_data', {
                         api: '/api/edit_exam',
-                        data: {
-                            'account': localStorage.getItem('account'),
-                            'serial': row.serial,
-                            'place': value
+                        data: this.examForm
+                    }).then((response) => {
+                        if (response.data.status == 200) {
+                            this.$message({
+                                type: 'success',
+                                message: '修改成功！'
+                            })
+                            location.reload()
+                        } else {
+                            this.$store.commit({
+                                type: 'show_message',
+                                status: response.data.status
+                            })
+                            console.log(response.data.status)
+                            this.$message(this.$store.state.app.message_box)
                         }
-                }) */
-                console.log(index, row);
+                    }).catch((error) => {
+                        alert(error)
+                    });
             },
+
             handleDelete(index, row) {
                 this.$confirm('确认删除？',{
                     confirmButtonText: '确定',
@@ -139,8 +384,6 @@
                         message: ' '
                     });
                 })
-                /* console.log(index, row);
-                console.log(row.teacher) */
             }
         },
 

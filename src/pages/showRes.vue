@@ -89,6 +89,8 @@
                 btn_cancel_res: '取消',
                 btn_ensure_cancel_res: '同意取消',
                 btn_wait_ensure: '等待同意',
+
+
                 myRes : [
                     {
                         week: '第1周',

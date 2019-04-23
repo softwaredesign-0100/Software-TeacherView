@@ -46,14 +46,14 @@
 
                                 <el-col :span="6">
                                     <el-time-picker
-                                        is-range
-                                        v-model="examForm.e_time"
-                                        value-format="HH:mm"
-                                        format="HH:mm"
-                                        range-separator="至"
-                                        start-placeholder="开始时间"
-                                        end-placeholder="结束时间"
-                                        placeholder="选择时间范围">
+                                            is-range
+                                            v-model="examForm.e_time"
+                                            value-format="HH:mm"
+                                            format="HH:mm"
+                                            range-separator="至"
+                                            start-placeholder="开始时间"
+                                            end-placeholder="结束时间"
+                                            placeholder="选择时间范围">
                                     </el-time-picker>
                                 </el-col>
 
@@ -82,7 +82,7 @@
 <script>
 
     import headTop from '../components/Header'
-    import { stat } from 'fs';
+    import {stat} from 'fs';
 
     export default {
 
@@ -92,12 +92,17 @@
 
         data() {
             return {
+                time_picker_options: {
+                    start: '',
+                    end: '',
+                    step: '00:05'
+                },
                 examForm: {
-                    e_name:'',
+                    e_name: '',
                     tips: '',
                     place: '',
                     e_time: '',
-                    week_selected:'',
+                    week_selected: '',
                     week_options: [
                         {
                             key: '选项1',
@@ -189,7 +194,7 @@
                         },
 
                     ],
-                    weekday_selected:'',
+                    weekday_selected: '',
                     weekday_options: [
                         {
                             key: '选项1',
@@ -234,15 +239,15 @@
         methods: {
             onSubmit() {
                 console.log(this.examForm)
-                let e_name=this.examForm.e_name
+                let e_name = this.examForm.e_name
                 let week = this.examForm.week_selected
                 let weekday = this.examForm.weekday_selected
                 let start = this.examForm.e_time[0]
                 let end = this.examForm.e_time[1]
-                let place=this.examForm.place
+                let place = this.examForm.place
                 let tips = this.examForm.tips
-                start=start.toLocaleString()
-                end=end.toLocaleString()
+                start = start.toLocaleString()
+                end = end.toLocaleString()
                 this.$store.dispatch('post_data', {
                     api: '/api/release_exam',
                     data: {
