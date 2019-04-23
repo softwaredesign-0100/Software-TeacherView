@@ -8,6 +8,8 @@ import showRes from '../pages/showRes'
 // import seekRes from '../pages/seekRes'
 import publishRes from '../pages/publishRes'
 import publishExam from '../pages/publishExam'
+import hisRes from '../pages/hisRes'
+import hisExam from '../pages/hisExam'
 import showExam from '../pages/showExam'
 import personInfo from '../pages/personInfo'
 
@@ -42,6 +44,14 @@ export default new Router({
                 {
                     path: '/publishExam',
                     component: publishExam
+                },
+                {
+                    path: '/hisRes',
+                    component: hisRes
+                },
+                {
+                    path: '/hisExam',
+                    component: hisExam
                 },
                 {
                     path: '/showExam',
