@@ -32,7 +32,18 @@
                             <el-menu-item index="/publishExam" ><i class="zhao-icon-third-icon_search"></i> &nbsp; 发布考试安排</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
-                    
+
+                    <el-submenu index="3">
+                        <template slot="title">
+                            <i class="el-icon-location"></i>
+                            <span>我的历史</span>
+                        </template>
+                        <el-menu-item-group>
+                            <el-menu-item index="/hisRes" ><i class="zhao-icon-third-icon_statistics"></i> &nbsp; 历史发布预约</el-menu-item>
+                            <el-menu-item index="/hisExam" ><i class="zhao-icon-third-icon_statistics"></i> &nbsp; 历史发布考试</el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+
                     <el-menu-item index="/changePassword"><i class="zhao-icon-third-icon_boss"></i>
                         &nbsp; 修改密码
                     </el-menu-item>
