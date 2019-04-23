@@ -81,7 +81,7 @@
         mounted() {
 
             this.$store.dispatch('post_data', {
-                api: '/api/seek_reservation',
+                api: '/api/view_his_res',
                 data: {}
             }).then((response) => {
                 if (response.data.status == 200) {

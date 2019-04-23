@@ -188,7 +188,7 @@
                 }).catch(() => {
                     this.$message({
                         type: 'info',
-                        message: '取消输入'
+                        message: '取消'
                     });
                 });
             },
