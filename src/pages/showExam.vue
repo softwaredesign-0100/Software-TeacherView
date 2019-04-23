@@ -87,9 +87,58 @@
 
         methods: {
             handleFinish(index, row) {
+                /* this.$confirm('确认修改否？',{
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({value})=>{
+                    console.log(row)
+                    this.$store.dispatch('post_data', {
+                        api: '/api/edit_exam',
+                        data: {
+                            'account': localStorage.getItem('account'),
+                            'serial': row.serial,
+                            'place': value
+                        }
+                }) */
                 console.log(index, row);
             },
             handleDelete(index, row) {
+                this.$confirm('确认删除？',{
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({value})=>{
+                    console.log(row)
+                    this.$store.dispatch('post_data', {
+                        api: '/api/delete_exam',
+                        data: {
+                            'account': localStorage.getItem('account'),
+                            'serial': row.serial,
+                            'identify': this.$store.state.identify
+                        }
+                        }).then((response) => {
+                        if (response.data.status == 200) {
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功！'
+                            })
+                            location.reload()
+                        } else {
+                            this.$store.commit({
+                                type: 'show_message',
+                                status: response.data.status
+                            })
+                            console.log(response.data.status)
+                            this.$message(this.$store.state.app.message_box)
+                        }
+                    }).catch((error) => {
+                        alert(error)
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });
+                })
                 console.log(index, row);
                 console.log(row.teacher)
             }
