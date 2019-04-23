@@ -139,8 +139,8 @@
                         message: '取消输入'
                     });
                 })
-                console.log(index, row);
-                console.log(row.teacher)
+                /* console.log(index, row);
+                console.log(row.teacher) */
             }
         },
 
