@@ -22,13 +22,13 @@
             <el-col :span="20" :offset="2" style="margin-top: 5%;">
             <el-timeline :reverse="reverse">
                 <el-timeline-item
-                v-for="(activity, index) in activities"
+                v-for="(res, index) in resInfo"
                 :key="index"
-                :timestamp="activity.timestamp">
+                :timestamp="res.week">
                 <el-card>
-                    <h4>学生:{{activity.s_name}}</h4>
-                    <p>{{activity.place}}  {{activity.segment}}</p>
-                    <p>预约原因：{{activity.reason}}</p>
+                    <h4>学生:{{res.s_name}}</h4>
+                    <p>{{res.place}}  {{res.segment}}</p>
+                    <p>预约原因：{{res.reason}}</p>
                 </el-card>
                 </el-timeline-item>
             </el-timeline>
@@ -71,6 +71,7 @@
                     reason:'学业繁重，感觉迷茫'
                 }],
                 search: '',
+                resInfo: [],
             }
         },
 
@@ -82,13 +83,17 @@
 
             this.$store.dispatch('post_data', {
                 api: '/api/view_his_res',
-                data: {}
+                data: {
+                    account: localStorage.getItem('account'),
+                    identify: this.$store.state.identify
+                }
             }).then((response) => {
                 if (response.data.status == 200) {
-                    this.resInfo = response.data.ress
+                    this.resInfo = response.data.results
                     for (let i = 0; i < this.resInfo.length; i = i + 1) {
                         this.resInfo[i]['week'] = this.$store.state.map_week[this.resInfo[i]['week']]
                         this.resInfo[i]['weekday'] = this.$store.state.map_weekday[this.resInfo[i]['weekday']]
+                        this.resInfo[i]['segment'] = this.$store.state.map_weekday[this.resInfo[i]['segment']]
                     }
                 } else {
                     this.$store.commit({

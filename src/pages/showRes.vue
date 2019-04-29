@@ -113,7 +113,7 @@
                 }).then(({value})=>{
                     console.log(row)
                     this.$store.dispatch('post_data', {
-                        api: '/api/s_finish_res',
+                        api: '/api/finish_res',
                         data: {
                             'account': localStorage.getItem('account'),
                             'serial': row.serial

@@ -22,13 +22,14 @@
             <el-col :span="20" :offset="2" style="margin-top: 5%;">
             <el-timeline :reverse="reverse">
                 <el-timeline-item
-                v-for="(activity, index) in activities"
+                v-for="(res, index) in resInfo"
                 :key="index"
-                :timestamp="activity.timestamp">
-                <el-card>
-                    <h4>{{activity.name}}</h4>
-                    <p>{{activity.place}}   {{activity.start}}-{{activity.end}}</p>
-                </el-card>
+                :timestamp="res.week">
+                    <el-col :span="12">
+                        <h4>{{res.t_name}}老师</h4>
+                        <p>地点：{{res.place}} 时间：{{res.weekday}}&nbsp;{{res.segment}}</p>
+                        <p>tips：{{res.tips}}</p>
+                    </el-col>
                 </el-timeline-item>
             </el-timeline>
             </el-col>
@@ -70,6 +71,7 @@
                     timestamp: '2018-04-11'
                 }],
                 search: '',
+                resInfo: []
             }
         },
 
@@ -81,7 +83,9 @@
 
             this.$store.dispatch('post_data', {
                 api: '/api/view_his_res',
-                data: {}
+                data: {
+
+                }
             }).then((response) => {
                 if (response.data.status == 200) {
                     this.resInfo = response.data.ress
