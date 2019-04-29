@@ -40,7 +40,7 @@
                         </template>
                         <el-menu-item-group>
                             <el-menu-item index="/hisRes" ><i class="zhao-icon-third-icon_statistics"></i> &nbsp; 历史发布预约</el-menu-item>
-                            <el-menu-item index="/hisExam" ><i class="zhao-icon-third-icon_statistics"></i> &nbsp; 历史发布考试</el-menu-item>
+                            <!--<el-menu-item index="/hisExam" ><i class="zhao-icon-third-icon_statistics"></i> &nbsp; 历史发布考试</el-menu-item>-->
                         </el-menu-item-group>
                     </el-submenu>
 
