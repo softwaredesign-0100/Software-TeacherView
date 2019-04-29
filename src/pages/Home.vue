@@ -207,6 +207,8 @@
 									message: '注册成功！请前往登陆界面登陆',
 									duration: 6000
 								})
+								this.SignUpVisible = false;
+								this.SignInVisible = true;
 							} else if (response.data == 400) {
 								this.$message({
 									message: "该用户名已存在",
