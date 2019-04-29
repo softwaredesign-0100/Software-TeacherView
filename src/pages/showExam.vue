@@ -4,9 +4,47 @@
         <div>
             <el-row>
                 <el-col :span="20" :offset="2" style="margin-top: 10%;">
-                    <span style="font-family: Helvetica Neue; font-size: 18px">您的考试发布如下：</span>
+                    <span style="font-family: Helvetica Neue; font-size: 14px">您等待完成的考试如下：</span>
+                    <el-button type="text" @click="changeShowModus">{{show_modus}}</el-button>
+                    <div class="block" style="margin-bottom: 5%;">
+                        <div class="radio">
+                            <span style="font-family: Helvetica Neue; font-size: 14px">排序：</span>
+                            <el-radio-group v-model="reverse">
+                                <el-radio :label="true">倒序</el-radio>
+                                <el-radio :label="false">正序</el-radio>
+                            </el-radio-group>
+                        </div>
+                    </div>
+
+                    <el-timeline
+                            v-if="show_time_line"
+                            :reverse="reverse">
+                        <el-timeline-item
+                                v-for="(exam, index) in myExam"
+                                :key="index"
+                                :timestamp="exam.week">
+                            <el-card>
+                                <el-col :span="12">
+                                    <h4>{{exam.e_name}}&nbsp;&nbsp;&nbsp;任课教师：{{exam.t_name}}</h4>
+                                    <p>地点：{{exam.place}} 时间：{{exam.weekday}}&nbsp;{{exam.segment}}</p>
+                                    <p>tips：{{exam.tips}}</p>
+                                </el-col>
+                                <el-col :span="12">
+                                    <el-button
+                                            size="mini"
+                                            @click="handleFinish(index, exam)">完成</el-button>
+                                    <el-button
+                                            size="mini"
+                                            type="danger"
+                                            @click="handleDelete(index, exam)">删除</el-button>
+                                </el-col>
+                            </el-card>
+                        </el-timeline-item>
+                    </el-timeline>
+
                     <el-table
-                            :data="myRes"
+                            v-else
+                            :data="myExam"
                             stripe
                             style="width: 100%">
                         <el-table-column
@@ -135,11 +173,13 @@
 
         data() {
             return {
-                myRes : [
+                myExam : [
 
                 ],
                 showChange: false,
-
+                show_time_line: true,
+                reverse: false,
+                show_modus: '以列表形式显示',
                 time_picker_options : {
                     start: '',
                     end: '',
@@ -384,6 +424,16 @@
                         message: ' '
                     });
                 })
+            },
+            changeShowModus () {
+                if (this.show_time_line) {
+                    this.show_time_line = false;
+                    this.show_modus = '以时间线形式显示';
+                }
+                else {
+                    this.show_time_line = true;
+                    this.show_modus = '以列表形式显示';
+                }
             }
         },
 
@@ -397,13 +447,15 @@
                 }
             }).then((response) => {
                 if (response.data.status == 200) {
-                    this.myRes = response.data.exams
-                    console.log(this.myRes)
-                    for (let i = 0; i < this.myRes.length; i = i + 1) {
-                        this.myRes[i]['week'] = this.$store.state.map_week[this.myRes[i]['week']]
-                        this.myRes[i]['weekday'] = this.$store.state.map_weekday[this.myRes[i]['weekday']]
+                    this.myExam = response.data.exams
+                    console.log(this.myExam)
+                    for (let i = 0; i < this.myExam.length; i = i + 1) {
+                        this.myExam[i]['week'] = this.$store.state.map_week[this.myExam[i]['week']]
+                        this.myExam[i]['weekday'] = this.$store.state.map_weekday[this.myExam[i]['weekday']]
+                        this.myExam[i]['segment'] = this.$store.state.map_weekday[this.myExam[i]['segment']]
+
                     }
-                    console.log(this.myRes)
+                    console.log(this.myExam)
                 }else if (response.data.status == 400) {
                     this.$message({
                         type: 'warning',
