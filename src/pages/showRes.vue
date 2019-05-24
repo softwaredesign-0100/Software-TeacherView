@@ -45,13 +45,13 @@
                                             v-if="res.is_canceled == '1'"
                                             size="mini"
                                             type="danger"
-                                            @click="handleEnsure(index, res)">{{btn_ensure_cancel_res}}
+                                            @click="handleCancel(index, res)">{{btn_wait_ensure}}
                                     </el-button>
                                     <el-button
                                             v-if="res.is_canceled == '2'"
                                             size="mini"
                                             type="danger"
-                                            @click="handleCancel(index, res)">{{btn_wait_ensure}}
+                                            @click="handleCancel(index, res)">{{btn_ensure_cancel_res}}
                                     </el-button>
                                     <el-button
                                             v-if="res.is_canceled == '3'"
