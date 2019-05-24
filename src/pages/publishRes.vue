@@ -4,58 +4,62 @@
         <div class="app-container">
             <el-form ref="resFrom" :model="resForm" label-width="120px" style="margin-top: 10%">
                 <el-row>
-                    <el-col :span="22">
+                    <el-col :span="18" :offset="4">
                         <el-form-item label="预约地点" label-width="120px">
                             <el-row>
-                                <el-col :span="16">
+
+                                <div style="width: 40em;">
                                     <el-input v-model="resForm.place"/>
-                                </el-col>
+                                </div>
+
                             </el-row>
                         </el-form-item>
                         <el-form-item label="预约时间">
                             <el-row>
 
-                                <el-col :span="6">
-                                    <el-select v-model="resForm.week_selected" multiple placeholder="请选择周次，可多选">
-                                        <el-option
-                                                v-for="item in resForm.week_options"
-                                                :key="item.key"
-                                                :label="item.label"
-                                                :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </el-col>
+                                <div style="width: 40em">
+                                    <el-col :span="8">
+                                        <el-select v-model="resForm.week_selected" multiple placeholder="请选择周次，可多选">
+                                            <el-option
+                                                    v-for="item in resForm.week_options"
+                                                    :key="item.key"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </el-col>
 
-                                <el-col :span="6">
-                                    <el-select v-model="resForm.weekday_selected" multiple placeholder="请选择第几天，可多选">
-                                        <el-option
-                                                v-for="item in resForm.weekday_options"
-                                                :key="item.key"
-                                                :label="item.label"
-                                                :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </el-col>
+                                    <el-col :span="8">
+                                        <el-select v-model="resForm.weekday_selected" multiple placeholder="请选择第几天，可多选">
+                                            <el-option
+                                                    v-for="item in resForm.weekday_options"
+                                                    :key="item.key"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </el-col>
 
-                                <el-col :span="6">
-                                    <el-select v-model="resForm.segment_selected" multiple placeholder="请选择时间段，可多选">
-                                        <el-option
-                                                v-for="item in resForm.segment_options"
-                                                :key="item.key"
-                                                :label="item.label"
-                                                :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </el-col>
+                                    <el-col :span="8">
+                                        <el-select v-model="resForm.segment_selected" multiple placeholder="请选择时间段，可多选">
+                                            <el-option
+                                                    v-for="item in resForm.segment_options"
+                                                    :key="item.key"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </el-col>
 
+                                </div>
                             </el-row>
                         </el-form-item>
 
                         <el-form-item label="注意事项">
                             <el-row>
-                                <el-col :span="16">
+                                <div style="width: 40em">
                                     <el-input v-model="resForm.tips" type="textarea"/>
-                                </el-col>
+                                </div>
                             </el-row>
                         </el-form-item>
                         <el-form-item>
@@ -322,6 +326,7 @@
                             type: 'success',
                             message: '发布预约成功!'
                         })
+                        location.reload()
                     } else {
                         this.$store.commit({
                             type: 'show_message',
