@@ -9,8 +9,8 @@
                         <div class="radio">
                             <span style="font-family: Helvetica Neue; font-size: 14px">排序：</span>
                             <el-radio-group v-model="reverse">
-                            <el-radio :label="true">倒序</el-radio>
                             <el-radio :label="false">正序</el-radio>
+                            <el-radio :label="true">倒序</el-radio>
                             </el-radio-group>
                         </div>
                     </div>
@@ -29,6 +29,13 @@
                     <h4>学生:{{res.s_name}}</h4>
                     <p>{{res.place}}  {{res.segment}}</p>
                     <p>预约原因：{{res.reason}}</p>
+                    <el-rate
+                      v-model="res.score"
+                      disabled
+                      show-score
+                      text-color="#ff9900"
+                      score-template="{value}">
+                    </el-rate>
                 </el-card>
                 </el-timeline-item>
             </el-timeline>
@@ -50,7 +57,7 @@
 
         data () {
             return {
-                reverse: true,
+                reverse: false,
                 activities: [{
                     s_name:'马东',
                     segment:'17:30-18:00',

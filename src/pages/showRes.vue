@@ -26,9 +26,10 @@
                                 :timestamp="res.week">
                             <el-card>
                                 <el-col :span="12">
-                                    <h4>{{res.t_name}}老师</h4>
+                                    <h4>学生：{{res.student}}</h4>
                                     <p>地点：{{res.place}} 时间：{{res.weekday}}&nbsp;{{res.segment}}</p>
                                     <p>tips：{{res.tips}}</p>
+                                    <br>
                                 </el-col>
                                 <el-col :span="12">
                                     <el-button
@@ -45,13 +46,13 @@
                                             v-if="res.is_canceled == '1'"
                                             size="mini"
                                             type="danger"
-                                            @click="handleEnsure(index, res)">{{btn_ensure_cancel_res}}
+                                            @click="handleEnsure(index, res)">{{btn_wait_ensure}}
                                     </el-button>
                                     <el-button
                                             v-if="res.is_canceled == '2'"
                                             size="mini"
                                             type="danger"
-                                            @click="handleCancel(index, res)">{{btn_wait_ensure}}
+                                            @click="handleCancel(index, res)">{{btn_ensure_cancel_res}}
                                     </el-button>
                                     <el-button
                                             v-if="res.is_canceled == '3'"
@@ -70,6 +71,17 @@
                             :data="myRes"
                             stripe
                             style="width: 100%">
+                        <el-table-column
+                                sortable
+                                prop="is_finished"
+                                label="状态"
+                                width="80">
+                            <template slot-scope="scope">
+                              <div slot="reference" class="name-wrapper">
+                                <el-tag size="medium">{{ scope.row.is_finished }}</el-tag>
+                              </div>
+                            </template>
+                        </el-table-column>
                         <el-table-column
                                 sortable
                                 prop="week"
@@ -96,10 +108,19 @@
                                 label="地点">
                         </el-table-column>
                         <el-table-column
-                                prop="reason"
+                                prop="tips"
                                 label="理由">
                         </el-table-column>
-
+                        <el-table-column
+                                label="评分">
+                            <template slot-scope="scope">
+                                <el-rate
+                                  v-model="scope.row.score"
+                                  show-text
+                                  @change="changeStatus(scope.$index, $event)">
+                                </el-rate>
+                            </template>
+                        </el-table-column>
                         <el-table-column label="操作">
                             <template slot-scope="scope">
                                 <el-button
@@ -143,6 +164,7 @@
         name: "showRes",
         components: {
             headTop
+
         },
 
         data() {
@@ -153,16 +175,19 @@
                 show_time_line: true,
                 reverse: false,
                 show_modus: '以列表形式显示',
+                // score: 5,
 
 
                 myRes : [
                     {
+                        t_name: "张志捷",
                         week: '第1周',
                         weekday: '周五',
                         segment: '10:30 ~ 11:00',
                         student: '***',
                         place: '宋健一号院北***',
                         reason: '答疑',
+                        score: 5,
                         tips: '',
                     }
                 ]
@@ -180,7 +205,8 @@
                         api: '/api/finish_res',
                         data: {
                             'account': localStorage.getItem('account'),
-                            'serial': row.serial
+                            'serial': row.serial,
+                            'score': this.myRes[index]['score']
                         }
                         }).then((response) => {
                         if (response.data.status == 200) {
@@ -208,6 +234,12 @@
                 })
                 //console.log(index, row);
             },
+
+            changeStatus(index, $event){
+                this.myRes[index]['score'] = $event
+
+            },
+
             handleDelete(index, row) {
                 console.log(index, row);
                 console.log(row.teacher)
@@ -315,6 +347,16 @@
                         this.myRes[i]['segment'] = this.$store.state.map_segment[this.myRes[i]['segment']]
                         this.myRes[i]['week'] = this.$store.state.map_week[this.myRes[i]['week']]
                         this.myRes[i]['weekday'] = this.$store.state.map_weekday[this.myRes[i]['weekday']]
+                        this.myRes[i]['score'] = parseInt(this.myRes[i]['score'])
+                        if (this.myRes[i]['is_selected'] == 1) {
+                            this.myRes[i]['is_finished'] = "已预约"
+                        } else if (this.myRes[i]['is_finished'] == 1) {
+                            this.myRes[i]['is_finished'] = "已完成"
+                        } else if(this.myRes[i]['is_canceled'] == 3) {
+                            this.myRes[i]['is_finished'] = "已取消"
+                        } else {
+                            this.myRes[i]['is_finished'] = "未预约"
+                        }
                     }
                     console.log(this.myRes)
                 } else {

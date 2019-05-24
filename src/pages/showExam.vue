@@ -25,9 +25,10 @@
                                 :timestamp="exam.week">
                             <el-card>
                                 <el-col :span="12">
-                                    <h4>{{exam.e_name}}&nbsp;&nbsp;&nbsp;任课教师：{{exam.t_name}}</h4>
+                                    <h4>{{exam.e_name}}任课教师：{{exam.t_name}}</h4>
                                     <p>地点：{{exam.place}} 时间：{{exam.weekday}}&nbsp;{{exam.segment}}</p>
                                     <p>tips：{{exam.tips}}</p>
+                                    <br>
                                 </el-col>
                                 <el-col :span="12">
                                     <el-button
