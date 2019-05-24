@@ -4,7 +4,7 @@
         <div>
             <el-row>
                 <el-col :span="20" :offset="2" style="margin-top: 10%;">
-                    <span style="font-family: Helvetica Neue; font-size: 14px">您等待完成的考试如下：</span>
+                    <span style="font-family: Helvetica Neue; font-size: 14px">您发布的考试如下：</span>
                     <el-button type="text" @click="changeShowModus">{{show_modus}}</el-button>
                     <div class="block" style="margin-bottom: 5%;">
                         <div class="radio">
@@ -22,21 +22,38 @@
                         <el-timeline-item
                                 v-for="(exam, index) in myExam"
                                 :key="index"
+                                color="#409EFF"
                                 :timestamp="exam.week">
                             <el-card>
                                 <el-col :span="12">
-                                    <h4>{{exam.e_name}}&nbsp;&nbsp;&nbsp;任课教师：{{exam.t_name}}</h4>
-                                    <p>地点：{{exam.place}} 时间：{{exam.weekday}}&nbsp;{{exam.segment}}</p>
-                                    <p>tips：{{exam.tips}}</p>
+                                    <template>
+                                        <h4>{{exam.e_name}}任课教师：{{exam.name}}</h4>
+                                        <el-divider></el-divider>
+                                        <div style="height: 2em;">
+                                            <span>地点：{{exam.place}}</span>
+                                            <el-divider direction="vertical"></el-divider>
+
+                                            <span> 时间：{{exam.weekday}} {{exam.start}} ~ {{exam.end}}</span>
+
+                                        </div>
+                                        <el-divider></el-divider>
+                                        <p>Tips：{{exam.tips}}</p>
+                                        <br>
+                                    </template>
                                 </el-col>
                                 <el-col :span="12">
+                                    <p>操作：</p>
+                                    <el-divider></el-divider>
                                     <el-button
                                             size="mini"
-                                            @click="handleFinish(index, exam)">完成</el-button>
+                                            @click="handleFinish(index, exam)">完成
+                                    </el-button>
                                     <el-button
                                             size="mini"
                                             type="danger"
-                                            @click="handleDelete(index, exam)">删除</el-button>
+                                            @click="handleDelete(index, exam)">删除
+                                    </el-button>
+                                    <el-divider></el-divider>
                                 </el-col>
                             </el-card>
                         </el-timeline-item>
@@ -47,11 +64,23 @@
                             :data="myExam"
                             stripe
                             style="width: 100%">
+
+                        <el-table-column
+                                label="状态"
+                                width="80"
+                        >
+                            <template slot-scope="scope">
+                                <el-button size="mini" type="primary" plain>
+                                    <i class="el-icon-check"></i>
+                                </el-button>
+                            </template>
+                        </el-table-column>
+
                         <el-table-column
                                 sortable
                                 prop="name"
                                 label="课程"
-                                width="150">
+                                width="120">
                         </el-table-column>
                         <el-table-column
                                 sortable
@@ -88,15 +117,19 @@
                                 width="140">
                         </el-table-column>
 
-                        <el-table-column label="操作">
+                        <el-table-column
+                                label="操作"
+                                width="160">
                             <template slot-scope="scope">
                                 <el-button
                                         size="mini"
-                                        @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+                                        @click="handleEdit(scope.$index, scope.row)">修改
+                                </el-button>
                                 <el-button
                                         size="mini"
                                         type="danger"
-                                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                                        @click="handleDelete(scope.$index, scope.row)">删除
+                                </el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -173,14 +206,12 @@
 
         data() {
             return {
-                myExam : [
-
-                ],
+                myExam: [],
                 showChange: false,
                 show_time_line: true,
                 reverse: false,
                 show_modus: '以列表形式显示',
-                time_picker_options : {
+                time_picker_options: {
                     start: '',
                     end: '',
                     step: '00:05'
@@ -294,7 +325,7 @@
 
                 ],
 
-                weekday_selected:'',
+                weekday_selected: '',
                 weekday_options: [
                     {
                         key: '选项1',
@@ -364,34 +395,34 @@
                 this.examForm.end = this.examForm.e_time[1];
                 this.examForm.account = localStorage.getItem('account');
                 console.log(this.examForm);
-                    this.$store.dispatch('post_data', {
-                        api: '/api/edit_exam',
-                        data: this.examForm
-                    }).then((response) => {
-                        if (response.data.status == 200) {
-                            this.$message({
-                                type: 'success',
-                                message: '修改成功！'
-                            })
-                            location.reload()
-                        } else {
-                            this.$store.commit({
-                                type: 'show_message',
-                                status: response.data.status
-                            })
-                            console.log(response.data.status)
-                            this.$message(this.$store.state.app.message_box)
-                        }
-                    }).catch((error) => {
-                        alert(error)
-                    });
+                this.$store.dispatch('post_data', {
+                    api: '/api/edit_exam',
+                    data: this.examForm
+                }).then((response) => {
+                    if (response.data.status == 200) {
+                        this.$message({
+                            type: 'success',
+                            message: '修改成功！'
+                        })
+                        location.reload()
+                    } else {
+                        this.$store.commit({
+                            type: 'show_message',
+                            status: response.data.status
+                        })
+                        console.log(response.data.status)
+                        this.$message(this.$store.state.app.message_box)
+                    }
+                }).catch((error) => {
+                    alert(error)
+                });
             },
 
             handleDelete(index, row) {
-                this.$confirm('确认删除？',{
+                this.$confirm('确认删除？', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
-                }).then(({value})=>{
+                }).then(({value}) => {
                     console.log(row)
                     this.$store.dispatch('post_data', {
                         api: '/api/delete_exam',
@@ -400,7 +431,7 @@
                             'serial': row.serial,
                             'identify': this.$store.state.identify
                         }
-                        }).then((response) => {
+                    }).then((response) => {
                         if (response.data.status == 200) {
                             this.$message({
                                 type: 'success',
@@ -425,12 +456,11 @@
                     });
                 })
             },
-            changeShowModus () {
+            changeShowModus() {
                 if (this.show_time_line) {
                     this.show_time_line = false;
                     this.show_modus = '以时间线形式显示';
-                }
-                else {
+                } else {
                     this.show_time_line = true;
                     this.show_modus = '以列表形式显示';
                 }
@@ -453,10 +483,10 @@
                         this.myExam[i]['week'] = this.$store.state.map_week[this.myExam[i]['week']]
                         this.myExam[i]['weekday'] = this.$store.state.map_weekday[this.myExam[i]['weekday']]
                         this.myExam[i]['segment'] = this.$store.state.map_weekday[this.myExam[i]['segment']]
-
+                        this.myExam[i]['color'] = 'blue'
                     }
                     console.log(this.myExam)
-                }else if (response.data.status == 400) {
+                } else if (response.data.status == 400) {
                     this.$message({
                         type: 'warning',
                         message: '课程已发布'
