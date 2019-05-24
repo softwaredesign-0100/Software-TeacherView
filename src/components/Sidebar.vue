@@ -13,29 +13,29 @@
 
                     <el-submenu index="1">
                         <template slot="title">
-                            <i class="el-icon-location"></i>
+                            <i class="el-icon-notebook-1"></i>
                             <span>预约管理</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item index="/Main" ><i class="zhao-icon-third-icon_search"></i> &nbsp; 我的预约</el-menu-item>
-                            <el-menu-item index="/publishRes" ><i class="zhao-icon-third-icon_calendar"></i> &nbsp; 发布预约</el-menu-item>
+                            <el-menu-item index="/Main" ><i class="el-icon-view"></i> &nbsp; 我的预约</el-menu-item>
+                            <el-menu-item index="/publishRes" ><i class="el-icon-position"></i> &nbsp; 发布预约</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
 
                      <el-submenu index="2">
                         <template slot="title">
-                            <i class="el-icon-location"></i>
+                            <i class="el-icon-notebook-2"></i>
                             <span>&nbsp;考试管理</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item index="/showExam" ><i class="zhao-icon-third-icon_task"></i> &nbsp; 我的考试发布</el-menu-item>
-                            <el-menu-item index="/publishExam" ><i class="zhao-icon-third-icon_search"></i> &nbsp; 发布考试安排</el-menu-item>
+                            <el-menu-item index="/showExam" ><i class="el-icon-view"></i> &nbsp; 我的考试发布</el-menu-item>
+                            <el-menu-item index="/publishExam" ><i class="el-icon-position"></i> &nbsp; 发布考试安排</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
 
                     <el-submenu index="3">
                         <template slot="title">
-                            <i class="el-icon-location"></i>
+                            <i class="el-icon-finished"></i>
                             <span>我的历史</span>
                         </template>
                         <el-menu-item-group>
@@ -44,7 +44,7 @@
                         </el-menu-item-group>
                     </el-submenu>
 
-                    <el-menu-item index="/changePassword"><i class="zhao-icon-third-icon_boss"></i>
+                    <el-menu-item index="/changePassword"><i class="el-icon-lock"></i>
                         &nbsp; 修改密码
                     </el-menu-item>
                     
