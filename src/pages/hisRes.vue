@@ -9,8 +9,8 @@
                         <div class="radio">
                             <span style="font-family: Helvetica Neue; font-size: 14px">排序：</span>
                             <el-radio-group v-model="reverse">
-                            <el-radio :label="true">倒序</el-radio>
                             <el-radio :label="false">正序</el-radio>
+                            <el-radio :label="true">倒序</el-radio>
                             </el-radio-group>
                         </div>
                     </div>
@@ -24,11 +24,40 @@
                 <el-timeline-item
                 v-for="(res, index) in resInfo"
                 :key="index"
+                color="#409EFF"
                 :timestamp="res.week">
                 <el-card>
-                    <h4>学生:{{res.s_name}}</h4>
-                    <p>{{res.place}}  {{res.segment}}</p>
-                    <p>预约原因：{{res.reason}}</p>
+                    <el-col :span="8">
+                        <h4>学生:{{res.s_name}}</h4>
+                        <el-divider></el-divider>
+                        <span>
+                            地点：{{res.place}}
+                        </span>
+                        <el-divider direction="vertical"></el-divider>
+                        <span>
+                            时间：{{res.week}} {{res.weekday}} {{res.segment}}
+                        </span>
+                        <el-divider></el-divider>
+                        <p>预约原因：{{res.reason}}</p>
+                        <br>
+                    </el-col>
+
+                    <el-col :span="16">
+                        <p>对预约的评价：</p>
+                        <el-divider></el-divider>
+                        <template>
+                            <el-rate
+                                    v-model="res.score"
+                                    show-text
+                                    disabled
+                                    @change="changeStatus(index, $event)">
+                            </el-rate>
+                        </template>
+                        <el-divider></el-divider>
+
+
+                    </el-col>
+
                 </el-card>
                 </el-timeline-item>
             </el-timeline>
@@ -50,7 +79,7 @@
 
         data () {
             return {
-                reverse: true,
+                reverse: false,
                 activities: [{
                     s_name:'马东',
                     segment:'17:30-18:00',
@@ -93,7 +122,7 @@
                     for (let i = 0; i < this.resInfo.length; i = i + 1) {
                         this.resInfo[i]['week'] = this.$store.state.map_week[this.resInfo[i]['week']]
                         this.resInfo[i]['weekday'] = this.$store.state.map_weekday[this.resInfo[i]['weekday']]
-                        this.resInfo[i]['segment'] = this.$store.state.map_weekday[this.resInfo[i]['segment']]
+                        this.resInfo[i]['segment'] = this.$store.state.map_segment[this.resInfo[i]['segment']]
                     }
                 } else {
                     this.$store.commit({

@@ -28,7 +28,7 @@
                     <el-col :span="12">
                         <h4>{{res.t_name}}老师</h4>
                         <p>地点：{{res.place}} 时间：{{res.weekday}}&nbsp;{{res.segment}}</p>
-                        <p>tips：{{res.tips}}</p>
+                        <p>Tips：{{res.tips}}</p>
                     </el-col>
                 </el-timeline-item>
             </el-timeline>
