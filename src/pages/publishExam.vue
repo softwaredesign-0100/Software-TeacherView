@@ -265,7 +265,8 @@
                         this.$message({
                             type: 'success',
                             message: '发布考试安排成功!'
-                        })
+                        });
+                        location.reload();
                     } else {
                         this.$store.commit({
                             type: 'show_message',

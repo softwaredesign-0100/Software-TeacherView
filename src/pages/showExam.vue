@@ -469,7 +469,6 @@
 
         mounted() {
             console.log(localStorage.getItem('account'))
-
             this.$store.dispatch('post_data', {
                 api: '/api/view_own_release_exams',
                 data: {
@@ -501,8 +500,6 @@
             }).catch((error) => {
                 alert(error)
             })
-
-
         }
     }
 </script>

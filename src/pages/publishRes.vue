@@ -322,6 +322,7 @@
                             type: 'success',
                             message: '发布预约成功!'
                         })
+                        location.reload()
                     } else {
                         this.$store.commit({
                             type: 'show_message',
