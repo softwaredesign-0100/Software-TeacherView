@@ -148,7 +148,8 @@
 				},
 				rules2: {
 					password: [
-						{validator: validatePass, trigger: 'blur'}
+						
+					{ pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,30}$/, message: '密码必须包含数字、小写字母和大写字母，长度不小于8位' }
 					],
 					checkPassword: [
 						{validator: validatePass2, trigger: 'blur'}
