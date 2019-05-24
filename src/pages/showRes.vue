@@ -96,7 +96,7 @@
                                 label="地点">
                         </el-table-column>
                         <el-table-column
-                                prop="reason"
+                                prop="tips"
                                 label="理由">
                         </el-table-column>
 
