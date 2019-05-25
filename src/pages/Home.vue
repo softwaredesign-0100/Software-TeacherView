@@ -227,7 +227,7 @@
 								this.$message(this.$store.state.app.message_box)
 							}
 						}).catch((error) => {
-							alert(error)
+							// alert(error)
 						})
 					} else {
 						this.$message({
@@ -270,7 +270,7 @@
 								})
 								localStorage.setItem('account', this.SignInForm.account)
 								if (response.data.status == 200) {
-									this.$router.push('/Main')
+									this.$router.push('/cal')
 								} else {
 									this.$router.push('/personInfo')
 								}
@@ -284,7 +284,7 @@
 								this.$message(this.$store.state.app.message_box)
 							}
 						}).catch((error) => {
-							alert(error)
+							// alert(error)
 						})
 					}
 				});

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg_image">
         <head-top></head-top>
         <div class="app-container">
             <el-form ref="examFrom" label-position="left" :model="examForm" label-width="120px" style="margin-top: 10%">
@@ -286,7 +286,7 @@
                         this.ChangePwdForm.old_password = ''
                     }
                 }).catch((error) => {
-                    alert(error)
+                    // alert(error)
                 })
             },
             onCancel() {
@@ -302,6 +302,12 @@
 <style scoped>
     .line {
         text-align: center;
+    }
+
+    .bg_image {
+        background-image: url("../assets/bg.jpg");
+        height: 100%;
+        background-repeat: repeat;
     }
 </style>
 

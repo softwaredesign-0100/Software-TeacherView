@@ -1,5 +1,5 @@
 <template>
-    <div class='loading' style="min-height: 100%;">
+    <div class='bg_image' style="min-height: 100%;">
         <head-top></head-top>
         <div>
             <el-row>
@@ -414,7 +414,7 @@
                         this.$message(this.$store.state.app.message_box)
                     }
                 }).catch((error) => {
-                    alert(error)
+                    // alert(error)
                 });
             },
 
@@ -447,7 +447,7 @@
                             this.$message(this.$store.state.app.message_box)
                         }
                     }).catch((error) => {
-                        alert(error)
+                        // alert(error)
                     });
                 }).catch(() => {
                     this.$message({
@@ -499,7 +499,7 @@
                     this.$message(this.$store.state.app.message_box)
                 }
             }).catch((error) => {
-                alert(error)
+                // alert(error)
             })
 
 
@@ -508,5 +508,9 @@
 </script>
 
 <style scoped>
-
+    .bg_image {
+        background-image: url("../assets/bg.jpg");
+        /*height: 100%;*/
+        background-repeat: repeat;
+    }
 </style>

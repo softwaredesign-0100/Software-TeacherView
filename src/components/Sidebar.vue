@@ -7,7 +7,7 @@
                     <template>
                         <img src="../assets/1.jpg" class="avator">
                     </template>
-                    <el-menu-item index="/Main"><i class="zhao-icon-third-icon_work_fill"></i>
+                    <el-menu-item index="/cal"><i class="zhao-icon-third-icon_work_fill"></i>
                         &nbsp; 主页
                     </el-menu-item>
 
