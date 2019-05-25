@@ -12,6 +12,7 @@ import hisRes from '../pages/hisRes'
 import hisExam from '../pages/hisExam'
 import showExam from '../pages/showExam'
 import personInfo from '../pages/personInfo'
+import cal from '../pages/cal'
 
 Vue.use(Router)
 
@@ -33,10 +34,6 @@ export default new Router({
                     path: '/changePassword',
                     component: changePassword
                 },
-                // {
-                //     path: '/seekRes',
-                //     component: seekRes
-                // },
                 {
                     path: '/publishRes',
                     component: publishRes
@@ -60,6 +57,10 @@ export default new Router({
                 {
                     path: '/personInfo',
                     component: personInfo
+                },
+                {
+                    path: '/cal',
+                    component: cal
                 }
             ]
         }

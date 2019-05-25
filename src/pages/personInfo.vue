@@ -1,9 +1,11 @@
 <template>
-    <div>
+    <div class="bg_image">
         <head-top></head-top>
         <div>
             <el-row>
-                <el-col :span="16" :offset="2" style="margin-top: 10%">
+
+                <el-col :span="10" :offset="6" style="margin-top: 10%">
+                    <br/>
                     <span>修改 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <el-switch v-model="disabled"
                                                                                  @change="changedis"></el-switch></span>
                     <el-form style="margin-top: 2%" :label-position="labelPosition" label-width="80px"
@@ -113,7 +115,7 @@
                         this.$message(this.$store.state.app.message_box)
                     }
                 }).catch((error) => {
-                    alert(error)
+                    // alert(error)
                 })
             }
 
@@ -138,12 +140,16 @@
                     this.$message(this.$store.state.app.message_box)
                 }
             }).catch((error) => {
-                alert(error)
+                // alert(error)
             })
         }
     }
 </script>
 
 <style scoped>
-
+    .bg_image {
+        background-image: url("../assets/bg.jpg");
+        /*height: 100%;*/
+        background-repeat: repeat;
+    }
 </style>

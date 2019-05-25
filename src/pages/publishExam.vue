@@ -1,70 +1,80 @@
 <template>
-    <div>
+    <div class="bg_image">
         <head-top></head-top>
         <div class="app-container">
-            <el-form ref="examFrom" :model="examForm" label-width="120px" style="margin-top: 10%">
+            <el-form ref="examFrom" label-position="left" :model="examForm" label-width="120px" style="margin-top: 10%">
                 <el-row>
-                    <el-col :span="22">
+                    <el-col :span="16" :offset="4">
                         <el-form-item label="课程" label-width="120px">
                             <el-row>
-                                <el-col :span="16">
+
+                                <div style="width: 38em;">
                                     <el-input v-model="examForm.e_name"/>
-                                </el-col>
+                                </div>
+
                             </el-row>
                         </el-form-item>
                         <el-form-item label="考试地点" label-width="120px">
                             <el-row>
-                                <el-col :span="16">
+                                <div style="width: 38em;">
+
                                     <el-input v-model="examForm.place"/>
-                                </el-col>
+
+                                </div>
                             </el-row>
                         </el-form-item>
                         <el-form-item label="考试时间">
                             <el-row>
+                                <div style="width: 38em">
 
-                                <el-col :span="6">
-                                    <el-select v-model="examForm.week_selected" placeholder="请选择周次">
-                                        <el-option
-                                                v-for="item in examForm.week_options"
-                                                :key="item.key"
-                                                :label="item.label"
-                                                :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </el-col>
+                                    <el-col :span="6">
+                                        <el-select v-model="examForm.week_selected"
+                                                   placeholder="请选择周次">
+                                            <el-option
+                                                    v-for="item in examForm.week_options"
+                                                    :key="item.key"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </el-col>
+                                    <el-col :span="6">
+                                        <el-select v-model="examForm.weekday_selected"
+                                                   placeholder="请选择天数">
+                                            <el-option
+                                                    v-for="item in examForm.weekday_options"
+                                                    :key="item.key"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </el-col>
 
-                                <el-col :span="6">
-                                    <el-select v-model="examForm.weekday_selected" placeholder="请选择第几天">
-                                        <el-option
-                                                v-for="item in examForm.weekday_options"
-                                                :key="item.key"
-                                                :label="item.label"
-                                                :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </el-col>
 
-                                <el-col :span="6">
-                                    <el-time-picker
-                                            is-range
-                                            v-model="examForm.e_time"
-                                            value-format="HH:mm"
-                                            format="HH:mm"
-                                            range-separator="至"
-                                            start-placeholder="开始时间"
-                                            end-placeholder="结束时间"
-                                            placeholder="选择时间范围">
-                                    </el-time-picker>
-                                </el-col>
+                                    <el-col :span="12">
+                                        <el-time-picker
+                                                style="width: auto"
+                                                is-range
+                                                v-model="examForm.e_time"
+                                                value-format="HH:mm"
+                                                format="HH:mm"
+                                                range-separator="至"
+                                                start-placeholder="开始"
+                                                end-placeholder="结束"
+                                                placeholder="选择时间范围">
+                                        </el-time-picker>
+                                    </el-col>
 
+                                </div>
                             </el-row>
                         </el-form-item>
 
                         <el-form-item label="注意事项">
                             <el-row>
-                                <el-col :span="16">
-                                    <el-input v-model="examForm.tips" type="textarea"/>
-                                </el-col>
+
+                                <div style="width: 38em;">
+                                    <el-input v-model="examForm.tips" type="textarea" size="small"/>
+                                </div>
                             </el-row>
                         </el-form-item>
                         <el-form-item>
@@ -276,7 +286,7 @@
                         this.ChangePwdForm.old_password = ''
                     }
                 }).catch((error) => {
-                    alert(error)
+                    // alert(error)
                 })
             },
             onCancel() {
@@ -292,6 +302,12 @@
 <style scoped>
     .line {
         text-align: center;
+    }
+
+    .bg_image {
+        background-image: url("../assets/bg.jpg");
+        height: 100%;
+        background-repeat: repeat;
     }
 </style>
 
